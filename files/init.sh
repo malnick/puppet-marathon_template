@@ -3,7 +3,7 @@ DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 case "$1" in
   start)
-    ruby $DIR/marathon_template.rb
+    marathon-template
     echo $? > /var/run/marathon_template.pid
     ;;
   stop)

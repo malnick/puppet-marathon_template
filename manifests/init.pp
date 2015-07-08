@@ -4,6 +4,8 @@ class marathon_template (
 
 ){
 
+  class { ::marathon_template::haproxy:}
+  ->
   package { 'ruby':
     ensure    => present,
   }
@@ -18,16 +20,17 @@ class marathon_template (
     content   => template($template_location),
     mode      => '0644',
   }
-#  ->
-#  file { '/etc/init.d/mesosphere_template':
-#    ensure    => file,
-#    content   => template('mesosphere_template/init.erb')
-#    mode      => '0755',
-#  }
+  ->
+  file { '/etc/init.d/marathon-template-init':
+    ensure    => file,
+    source    => 'puppet:///modules/marathon_template/init.sh',
+    mode      => '0755',
+  }
   -> 
-  service { 'marathon-template':
-    ensure    => running,
-    enable    => true,
+  service { 'marathon-template-init':
+    ensure      => running,
+    hasrestart  => true,
+    enable      => true,
   }
 
 }
