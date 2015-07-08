@@ -4,8 +4,8 @@ class marathon_template (
 
 ){
 
-  class { ::marathon_template::haproxy:}
-  ->
+  include ::marathon_template::haproxy
+  
   package { 'ruby':
     ensure    => present,
   }
