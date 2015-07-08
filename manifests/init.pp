@@ -34,6 +34,7 @@ class marathon_template (
 #  }
   -> 
   exec {'marathon-template':
-    command => '/usr/local/bin/marathon-template'
+    command => '/usr/local/bin/marathon-template',
+    notify  => Service['haproxy'],
   }
 }
