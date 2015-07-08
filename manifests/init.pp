@@ -1,4 +1,4 @@
-class mesosphere_template (
+class marathon_template (
 
   $template_location,
 
@@ -25,7 +25,7 @@ class mesosphere_template (
 #    mode      => '0755',
 #  }
   -> 
-  service { 'mesosphere_template':
+  service { 'marathon-template':
     ensure    => running,
     enable    => true,
   }
