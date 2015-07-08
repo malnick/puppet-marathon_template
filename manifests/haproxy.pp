@@ -1,6 +1,6 @@
 class marathon_template::haproxy (
 
-  $version => '1.5' 
+  $version = '1.5' 
 
 ){ 
   # Ensure we get SSL haproxy
