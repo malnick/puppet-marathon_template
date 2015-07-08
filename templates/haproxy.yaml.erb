@@ -1,0 +1,65 @@
+---
+# Where is your Marathon?
+marathon: http://<%= @marathon_ip %>:8080 
+# Main HaProxy block
+haproxy:
+  global:
+    daemon:
+    log:
+      - '127.0.0.1 local0'
+      - '127.0.0.1 local1 notice'
+    maxconn: 4096
+  defaults:
+    log: global
+    mode: http
+    retries: 3
+    maxconn: 2000
+# Any HaProxy param that it utilized more than once can be passed a hash of options
+    timeout:
+      connect: '5s'
+      client: '50s'
+      server: '50s'
+      http-keep-alive: 1s
+      http-request: 15s
+      queue: 30s
+      tarpit: 60s
+# Or an array of options
+    option:
+      - httplog
+      - dontlognull
+      - forwardfor
+      - http-server-close
+      - redispatch
+# Listen block
+  listens:
+    stats:
+      bind: '0.0.0.0:9090'
+      mode: http
+      stats:
+        - enable
+        - hide-version
+        - 'url /'
+        - 'auth admin:admin'
+# Optional server block
+#      server:
+#        app_name: my_app_name_in_marathon
+# Options to pass into haproxy config on the server line
+#        options: check
+#
+# Frontend blocks
+  frontends:
+    http-in:
+      bind: '*:80'
+      mode: http
+      default_backend: nodes
+# Backend blocks
+  backends:
+    nodes:
+      balance: leastconn
+      option: forwardfor
+      http-request:
+        - 'http-request set-header X-Forwarded-Port %[dst_port]'
+# Backend also accept the server block
+      server:
+        app_name: my_app_name_in_marathon
+        options: check
