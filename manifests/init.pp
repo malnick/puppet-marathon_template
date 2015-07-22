@@ -11,7 +11,7 @@ class marathon_template (
   }
   ->
   package { 'marathon-template': 
-    ensure    => present,
+    ensure    => latest,
     provider  => 'gem',
   }
   ->
